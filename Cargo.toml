@@ -1,0 +1,7 @@
+[package]
+name = "toy-wasm"
+version = "0.1.0"
+authors = ["Benjamin Bouvier <public@benj.me>"]
+edition = "2018"
+
+[dependencies]
