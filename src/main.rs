@@ -1,29 +1,30 @@
 struct Module {
-    binary: Vec<u8>
+    binary: Vec<u8>,
 }
 
 const TYPE_SECTION_ID: u32 = 1;
 
 impl Module {
     fn new(binary: Vec<u8>) -> Self {
-        Self {
-            binary
-        }
+        Self { binary }
     }
 
     fn check_header(&self, cur: &mut usize) -> bool {
         if self.binary[*cur] != 0 ||
             self.binary[*cur + 1] != 97 ||  // A
             self.binary[*cur + 2] != 115 || // S
-            self.binary[*cur + 3] != 109 {  // M
+            self.binary[*cur + 3] != 109
+        {
+            // M
             println!("error when checking header: expected 0xasm");
             return false;
         }
 
-        if self.binary[*cur + 4] != 1 ||
-            self.binary[*cur + 5] != 0 ||
-            self.binary[*cur + 6] != 0 ||
-            self.binary[*cur + 6] != 0 {
+        if self.binary[*cur + 4] != 1
+            || self.binary[*cur + 5] != 0
+            || self.binary[*cur + 6] != 0
+            || self.binary[*cur + 6] != 0
+        {
             println!("error when checking header: expected version 0x1");
             false
         } else {
@@ -83,7 +84,10 @@ impl Module {
             let valtype_code = self.binary[*cur];
             *cur += 1;
         }
-        println!("function with {} args and {} return values", num_args, num_rets);
+        println!(
+            "function with {} args and {} return values",
+            num_args, num_rets
+        );
     }
 
     fn call(&self, func_index: usize) -> Result<(), &'static str> {
@@ -149,7 +153,11 @@ impl Module {
 }
 
 fn main() {
-    let binary = vec![0,97,115,109,1,0,0,0,1,133,128,128,128,0,1,96,0,1,127,3,130,128,128,128,0,1,0,7,135,128,128,128,0,1,3,97,100,100,0,0,10,141,128,128,128,0,1,135,128,128,128,0,0,65,1,65,2,106,11];
+    let binary = vec![
+        0, 97, 115, 109, 1, 0, 0, 0, 1, 133, 128, 128, 128, 0, 1, 96, 0, 1, 127, 3, 130, 128, 128,
+        128, 0, 1, 0, 7, 135, 128, 128, 128, 0, 1, 3, 97, 100, 100, 0, 0, 10, 141, 128, 128, 128,
+        0, 1, 135, 128, 128, 128, 0, 0, 65, 1, 65, 2, 106, 11,
+    ];
 
     let m = Module::new(binary);
     m.call(0);
